@@ -36,9 +36,9 @@ def _load_json(path: Path) -> dict:
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return {}
-def _lazy_boot_tabular() -> None:
-    global _PREPROCESSOR, _FEATURES, _TAB_MODEL, _TARGET_MAP
-
+        
+def _lazy_boot_tabular():
+    global _TAB_MODEL, _FEATURES, _PREPROCESSOR
     if _TAB_MODEL is not None and _FEATURES:
         return
 
@@ -46,28 +46,18 @@ def _lazy_boot_tabular() -> None:
         TAB_MODEL_PATH,
         PREPROCESSOR_PATH,
         FEATURE_LIST_PATH,
-        TARGET_MAP_PATH,   
     )
-    log_artifact_paths()
-    assert_artifacts_available(["PREPROCESSOR_PATH", "FEATURE_LIST_PATH", "TAB_MODEL_PATH"])
+    import json, joblib
 
-    log.info("Loading preprocessor: %s", PREPROCESSOR_PATH)
-    _PREPROCESSOR = joblib.load(PREPROCESSOR_PATH)
+    if _PREPROCESSOR is None:
+        _PREPROCESSOR = joblib.load(PREPROCESSOR_PATH)
 
-    log.info("Loading feature list: %s", FEATURE_LIST_PATH)
-    _FEATURES = json.loads(Path(FEATURE_LIST_PATH).read_text(encoding="utf-8"))
-    if not isinstance(_FEATURES, list) or not _FEATURES:
-        raise ValueError("feature_list.json is empty or invalid")
+    if not _FEATURES:
+        with open(FEATURE_LIST_PATH, "r", encoding="utf-8") as f:
+            _FEATURES = json.load(f)
 
-    log.info("Loading tabular model: %s", TAB_MODEL_PATH)
-    _TAB_MODEL = joblib.load(TAB_MODEL_PATH)
-    
-    if 'TARGET_MAP_PATH' in locals() and TARGET_MAP_PATH and Path(TARGET_MAP_PATH).exists():
-        try:
-            _TARGET_MAP = json.loads(Path(TARGET_MAP_PATH).read_text(encoding="utf-8"))
-            log.info("Loaded target map with %d classes", len(_TARGET_MAP))
-        except Exception:
-            log.warning("Failed to read TARGET_MAP_PATH %s", TARGET_MAP_PATH)
+    if _TAB_MODEL is None:
+        _TAB_MODEL = joblib.load(TAB_MODEL_PATH)
 
 def _lazy_boot_curve() -> None:
     global _CNN_SESSION, _SCALER, _FUSE, _PARAMS
