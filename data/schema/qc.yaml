@@ -1,0 +1,4 @@
+#винесла QC-поріг в конфіг для data_ingest
+duration_period_max_ratio: 0.20
+impact_max: 1.50
+min_depth_ppm: 0.0

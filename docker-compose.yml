@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    command: >
+      uvicorn api.utils.main:app
+      --host 0.0.0.0 --port 8000 --workers 1
+    ports:
+      - "8000:8000"
+    environment:
+      - DATA_DIR=/app/data
+      - MODEL_DIR=/app/models
+      - PREPROCESSOR_PATH=/app/models/preprocessor.pkl
+      - FEATURE_LIST_PATH=/app/models/feature_list.json
+      - TAB_MODEL_PATH=/app/models/tab_xgb.pkl
+      - SCALER_PATH=/app/models/scaler.bin
+      - CNN_ONNX_PATH=/app/models/cnn.onnx
+      - FUSE_MODEL_PATH=/app/models/fuse.joblib
+      - PARAMS_JSON_PATH=/app/models/params.json
+    volumes:
+      - ./data:/app/data:ro
+      - ./models:/app/models:ro
+    restart: unless-stopped

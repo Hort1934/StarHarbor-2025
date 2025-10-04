@@ -1,0 +1,47 @@
+{
+  "timestamp": "20251003",
+  "row_count": 17439,
+  "missions": [
+    "kepler",
+    "k2",
+    "tess"
+  ],
+  "format": "parquet",
+  "schema_version": "1.0",
+  "deduplication_enabled": true,
+  "deduplication_key": "(mission, object_id, round(period_days, 1e-4))",
+  "raw_artifacts": {
+    "kepler": {
+      "raw_path": "data/raw/kepler_raw_20251003.csv",
+      "raw_checksum_sha256": "7b774020c8d4e3a0263136b12c57b9f6fe706ac4c322eab3141d1abf5c4ad578",
+      "raw_parquet_path": "data/raw/kepler_raw_20251003.parquet",
+      "raw_parquet_checksum_sha256": "d5b9bd0db451c2d08d8c3addcea1d0167fd1116eb45d2ff6d4759501ace016b7"
+    },
+    "k2": {
+      "raw_path": "data/raw/k2_raw_20251003.csv",
+      "raw_checksum_sha256": "aae050b200a3c1ac0b43cfbcc43000ff05be49bf1b5be3fc27c3ed19a4cc31dd",
+      "raw_parquet_path": "data/raw/k2_raw_20251003.parquet",
+      "raw_parquet_checksum_sha256": "61ae9aa3771eb671edc026ce0c711af69c22fabb78246656086ce7d7380a020d"
+    },
+    "tess": {
+      "raw_path": "data/raw/tess_raw_20251003.csv",
+      "raw_checksum_sha256": "b05831906dc6e27724c7ef1f912cf071b7c07b40426d95c86421ee11ee2df2cb",
+      "raw_parquet_path": "data/raw/tess_raw_20251003.parquet",
+      "raw_parquet_checksum_sha256": "a7977e734857dd65bb14377dd768181b7f218c80196baaf1c58f421e941819d1"
+    }
+  },
+  "processed_checksums": {
+    "combined_sha256": "c2e3365d782c253b0a3c3c64a7c5dd0f734aaeb56392a74bc9ba85e2fb2e9936",
+    "kepler_sha256": "36fae449e294b4fe385afc566c9b00ef8b0bba7081fe93770d70aa22590f45e6",
+    "k2_sha256": "cfe8bd7ec586ede9ce295e91865cc4e51c31bf6a06b856225cbe4e5427eb414b",
+    "tess_sha256": "20a66e8a5e2c0b61c9095d1e66a8e9106d0fa6cce127964b1212732fd1aa1226"
+  },
+  "library_versions": {
+    "python": "3.12.6",
+    "pandas": "2.1.4",
+    "numpy": "1.26.4",
+    "astropy": "7.1.0",
+    "pyyaml": "6.0.2",
+    "tabulate_available": true
+  }
+}
