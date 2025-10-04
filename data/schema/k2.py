@@ -142,13 +142,54 @@ def _apply_unit_conversions(df: pd.DataFrame) -> pd.DataFrame:
 
 def normalize(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-
+    
+    # Clean up empty string cells that should be NaN
+    df = df.replace('', np.nan)
+    
     rename_cols = {c: COLUMN_MAP[c] for c in COLUMN_MAP if c in df.columns}
     df = df.rename(columns=rename_cols)
 
     df["mission"] = "k2"
 
     df = _apply_unit_conversions(df)
+    
+    # Extract EPIC ID from planet name
+    if "planet_name" in df.columns:
+        df["epic_id"] = df["planet_name"].apply(_extract_epic)
+    
+    # Set object_id 
+    if "object_id" not in df.columns:
+        if "planet_name" in df.columns:
+            df["object_id"] = df["planet_name"].fillna(df.get("host_name", ""))
+        else:
+            df["object_id"] = df.get("host_name", "")
+    
+    # Convert numeric columns
+    num_like = [
+        "period_days", "sma_au", "rp_rearth", "rp_rjup", 
+        "mp_sini_mearth", "mp_sini_mjup", "ecc", "insolation_earth", "eq_temp_k",
+        "stellar_teff_k", "stellar_radius_rsun", "stellar_mass_msun", 
+        "stellar_metallicity_dex", "stellar_logg_cgs", "stellar_distance_pc",
+        "ra_deg", "dec_deg", "mag_v", "mag_ks", "mag_gaia", "mag_kepler"
+    ]
+    for c in num_like:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+    
+    # Ensure label_raw is string
+    if "label_raw" in df.columns:
+        df["label_raw"] = df["label_raw"].astype(str)
+    
+    # Create wanted columns with NaN if missing
+    wanted = [
+        "mission", "object_id", "planet_name", "host_name",
+        "epic_id", "period_days", "rp_rearth", "eq_temp_k", "insolation_earth",
+        "stellar_teff_k", "stellar_logg_cgs", "stellar_radius_rsun", "stellar_distance_pc",
+        "ra_deg", "dec_deg", "mag_kepler", "label_raw"
+    ]
+    for c in wanted:
+        if c not in df.columns:
+            df[c] = np.nan
 
     numeric_cols = [
         "period_days", "sma_au",
@@ -160,6 +201,7 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
         "stellar_logg_cgs", "stellar_distance_pc",
         "mag_v", "mag_ks", "mag_gaia",
         "n_stars", "n_planets", "discovery_year",
+        "ra_deg", "dec_deg",  # Add coordinate columns
     ]
     for c in numeric_cols:
         if c in df.columns:

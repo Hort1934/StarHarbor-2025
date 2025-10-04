@@ -1,0 +1,6 @@
+planet_name,koi_name,koi_disposition,koi_period,koi_duration,koi_depth,koi_prad,koi_teq,koi_insol,koi_steff,koi_slogg,koi_srad,koi_model_snr,koi_impact,koi_fpflag_nt,koi_fpflag_ss,koi_fpflag_co,koi_fpflag_ec,ra,dec,koi_kepmag
+Extreme-Tiny,EXT-001.01,CANDIDATE,0.8,0.5,15,0.5,200,0.1,3500,4.8,0.4,5.2,0.95,1,0,1,0,359.9,89.5,18.5
+Extreme-Giant,EXT-002.01,CANDIDATE,15.5,8.2,35000,18.5,2500,8000.0,8000,3.5,2.8,150.0,0.01,0,1,1,0,0.1,-89.5,6.8
+Extreme-Hot,EXT-003.01,CANDIDATE,1.2,0.8,8000,8.2,3000,15000.0,9500,3.2,3.5,89.5,0.05,1,0,1,1,180.0,0.0,7.2
+Extreme-Cold,EXT-004.01,CANDIDATE,500.0,12.5,25,0.7,150,0.05,3200,4.9,0.35,4.8,0.98,1,0,1,0,90.0,45.0,19.2
+Extreme-LongP,EXT-005.01,CANDIDATE,800.0,18.0,180,2.8,180,0.8,4000,4.7,0.6,6.1,0.85,0,0,1,1,270.0,-45.0,17.8

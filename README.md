@@ -1,156 +1,106 @@
-# 🌟 StarHarbor - Exoplanet Detection with AI
+# 🌟 StarHarbor - Exoplanet Vetting System
 
-## NASA Space Apps Challenge 2025
+## Quick Start Guide
 
-StarHarbor is an AI-powered exoplanet detection system that analyzes space mission data to identify confirmed exoplanets, planetary candidates, and false positives.
-
-## 🚀 Quick Start
-
-### 1. Run with Docker (Recommended)
-
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd StarHarbor-2025
-
-# Start the full stack
-docker-compose up -d
-
-# Access the application
-# Frontend: http://localhost:3000
-# API: http://localhost:8000/docs
-```
-
-### 2. Run Locally
-
-#### Prerequisites
+### 📋 Prerequisites
 - Python 3.11+
-- Node.js (for frontend development)
+- All dependencies from `requirements.txt`
+- Trained models in the `models/` directory
 
-#### Setup API
+### 🚀 Running the System
+
+#### Option 1: Direct Python
 ```bash
 # Install dependencies
 pip install -r requirements.txt
 
 # Start the API server
-python scripts/run_server.py
-```
+python -m uvicorn api.utils.main:app --host 0.0.0.0 --port 8000 --reload
 
-#### Setup Frontend
-```bash
-# Start the frontend server
+# Open frontend
+# Navigate to frontend/index.html in your browser
+# Or serve with a simple HTTP server:
 cd frontend
-python -m http.server 3000
+python -m http.server 8080
 ```
 
-## 📊 Usage
+#### Option 2: Docker (Recommended)
+```bash
+# Build and start all services
+docker-compose up -d
 
-1. **Open the web interface** at http://localhost:3000
-2. **Upload your dataset** (CSV or Parquet format)
-   - Supported missions: Kepler, K2, TESS
-   - Sample data available in `test_data.csv`
-3. **Click "Аналізувати"** to start the AI analysis
-4. **View results** showing:
-   - Confirmed exoplanets
-   - Planetary candidates
-   - False positives
-   - Detection statistics
+# Check logs
+docker-compose logs -f
 
-## 🔬 Supported Data Formats
+# Stop services
+docker-compose down
+```
 
-### Input Columns
-The system accepts data from multiple space missions with these key columns:
+### 🔧 Testing the API
 
-- `period_days` - Orbital period
-- `duration_hours` - Transit duration  
-- `depth_ppm` - Transit depth in parts per million
-- `snr` - Signal-to-noise ratio
-- `impact` - Impact parameter
-- `stellar_teff_k` - Stellar effective temperature
-- `stellar_radius_rsun` - Stellar radius
-- And many more...
+Run the test script:
+```bash
+python test_api.py
+```
 
-### Missions Supported
-- **Kepler**: KOI (Kepler Objects of Interest)
-- **K2**: EPIC targets 
-- **TESS**: TOI (TESS Objects of Interest)
+### 📊 Using the Web Interface
 
-## 🤖 AI Models
+1. Open `http://localhost:80` (Docker) or `frontend/index.html` (direct)
+2. Upload a CSV file with exoplanet data
+3. Specify the mission (kepler/k2/tess) if using raw NASA data
+4. Click "Аналізувати" to run the AI analysis
+5. View results with predictions and statistics
 
-Our system uses multiple machine learning approaches:
+### 📁 Sample Data
 
-1. **Tabular Model**: XGBoost classifier for structured data
-2. **Neural Network**: ONNX-based CNN for light curve analysis
-3. **Ensemble Model**: Fusion of multiple predictions
-4. **Quality Control**: Automated vetting and validation
+Test files are available in `data/samples/`:
+- `sample_exoplanets.csv` - Kepler mission data
+- `sample_k2.csv` - K2 mission data
 
-## 📈 API Endpoints
+### 🔍 API Endpoints
 
 - `GET /inference/health` - Health check
 - `POST /inference/upload` - Upload and parse dataset
 - `POST /inference/predict` - Make predictions
 - `POST /inference/predict-file` - Predict from uploaded file
 - `POST /inference/explain` - SHAP explanations
+- `POST /inference/conformal` - Conformal prediction confidence
 - `POST /inference/vet` - Quality control vetting
 
-## 🛠️ Development
+### 📈 Features
 
-### Project Structure
+- **Multi-mission support**: Kepler, K2, TESS
+- **Robust CSV parsing**: Handles NASA Exoplanet Archive format
+- **AI-powered classification**: False Positive / Candidate / Confirmed
+- **Quality control**: Automated vetting flags
+- **Explainable AI**: SHAP feature importance
+- **Conformal prediction**: Uncertainty quantification
+- **Web interface**: User-friendly upload and analysis
+
+### 🛠 Troubleshooting
+
+1. **API not responding**: Check if server is running on port 8000
+2. **Empty predictions**: Ensure CSV contains actual data, not just headers
+3. **File parsing errors**: Try specifying the mission parameter
+4. **Missing models**: Ensure all model files are in the `models/` directory
+
+### 📚 Architecture
+
 ```
-StarHarbor-2025/
-├── api/                 # FastAPI backend
-│   ├── models/         # Pydantic models
-│   ├── routers/        # API endpoints
-│   ├── services/       # Business logic
-│   └── utils/          # Utilities
-├── data/               # Datasets and processing
-├── models/             # Trained ML models
-├── frontend/           # Web interface
-├── notebooks/          # Jupyter notebooks
-└── scripts/            # Utility scripts
+StarHarbor/
+├── api/               # FastAPI backend
+│   ├── models/        # Pydantic models
+│   ├── routers/       # API endpoints
+│   ├── services/      # Business logic
+│   └── utils/         # Utilities
+├── data/              # Data processing
+│   ├── schema/        # Mission-specific schemas
+│   └── samples/       # Test data
+├── frontend/          # Web interface
+├── models/            # Trained ML models
+└── docker-compose.yml # Container orchestration
 ```
 
-### Adding New Features
+### 🏆 NASA Space Apps Challenge 2025
 
-1. **New API endpoint**: Add to `api/routers/`
-2. **New model**: Update `api/services/pipeline.py`
-3. **Frontend changes**: Modify `frontend/index.html`
-
-## 🧪 Testing
-
-### Test the API
-```bash
-# Health check
-curl http://localhost:8000/inference/health
-
-# Upload test data
-curl -X POST -F "file=@test_data.csv" http://localhost:8000/inference/upload
-```
-
-### Run with Sample Data
-A sample CSV file `test_data.csv` is included with known exoplanet data for testing.
-
-## 🌌 Team
-
-**StarHarbor Team - NASA Space Apps Challenge 2025**
-
-- Ihor Marchenko (@hort19345) - Team Lead, Ukraine
-- Alina Koyun (@alinakoyun) - Developer, Ukraine  
-- Veronika (@horobets) - Developer, Ukraine
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🏆 NASA Space Apps Challenge
-
-This project was created for the 2025 NASA Space Apps Challenge as part of the Astrophysics Division challenge to develop AI/ML models for exoplanet detection using open-source datasets from NASA space missions.
-
-**Challenge**: Create an AI/ML model trained on exoplanet datasets that can analyze new data to accurately identify exoplanets.
-
-## 🔗 Links
-
-- [NASA Space Apps Challenge](https://www.spaceappschallenge.org/)
-- [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Docker Documentation](https://docs.docker.com/)
+This system was developed for the NASA Space Apps Challenge 2025, focusing on AI-powered exoplanet detection and vetting. It combines machine learning, conformal prediction, and quality control to help astronomers identify genuine exoplanet candidates from transit survey data.

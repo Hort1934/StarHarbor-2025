@@ -74,5 +74,3 @@ __all__ = [
     "CNN_ONNX_PATH", "PARAMS_JSON_PATH",
     "assert_artifacts_available", "log_artifact_paths",
 ]
-
-

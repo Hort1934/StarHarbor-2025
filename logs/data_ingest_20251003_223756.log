@@ -1,0 +1,80 @@
+2025-10-03 22:37:56,612 [INFO] Starting data ingestion pipeline
+2025-10-03 22:37:56,612 [INFO] Loading raw source for kepler: data\sources\kepler.csv
+2025-10-03 22:37:56,651 [ERROR] Error processing kepler: Expected 12 fields in line 4, saw 13
+Traceback (most recent call last):
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 440, in main
+    df_raw, saved_info = load_raw(source, mission, args.outdir_raw, date_tag)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 113, in load_raw
+    df = pd.read_csv(source, sep=None, engine="python")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 948, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 617, in _read
+    return parser.read(nrows)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1748, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 286, in read
+    alldata = self._rows_to_cols(content)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 1058, in _rows_to_cols
+    self._alert_malformed(msg, row_num + 1)
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 779, in _alert_malformed
+    raise ParserError(msg)
+pandas.errors.ParserError: Expected 12 fields in line 4, saw 13
+2025-10-03 22:37:56,670 [INFO] Loading raw source for k2: data\sources\k2.csv
+2025-10-03 22:37:56,707 [ERROR] Error processing k2: Expected 12 fields in line 9, saw 13
+Traceback (most recent call last):
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 440, in main
+    df_raw, saved_info = load_raw(source, mission, args.outdir_raw, date_tag)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 113, in load_raw
+    df = pd.read_csv(source, sep=None, engine="python")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 948, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 617, in _read
+    return parser.read(nrows)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1748, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 286, in read
+    alldata = self._rows_to_cols(content)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 1058, in _rows_to_cols
+    self._alert_malformed(msg, row_num + 1)
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 779, in _alert_malformed
+    raise ParserError(msg)
+pandas.errors.ParserError: Expected 12 fields in line 9, saw 13
+2025-10-03 22:37:56,710 [INFO] Loading raw source for tess: data\sources\tess.csv
+2025-10-03 22:37:56,777 [ERROR] Error processing tess: Expected 12 fields in line 4, saw 18
+Traceback (most recent call last):
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 440, in main
+    df_raw, saved_info = load_raw(source, mission, args.outdir_raw, date_tag)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 113, in load_raw
+    df = pd.read_csv(source, sep=None, engine="python")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 948, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 617, in _read
+    return parser.read(nrows)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1748, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 286, in read
+    alldata = self._rows_to_cols(content)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 1058, in _rows_to_cols
+    self._alert_malformed(msg, row_num + 1)
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\python_parser.py", line 779, in _alert_malformed
+    raise ParserError(msg)
+pandas.errors.ParserError: Expected 12 fields in line 4, saw 18
+2025-10-03 22:37:56,779 [ERROR] No dataframes were successfully processed. Exiting.

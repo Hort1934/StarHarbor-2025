@@ -396,6 +396,7 @@
                     },
                     body: JSON.stringify({
                         rows: uploadedData.rows || [],
+                        mission: 'kepler', // Default mission for compatibility
                         return_labels: true
                     })
                 });
@@ -451,26 +452,54 @@
         function displayResults(predictResult, uploadResult) {
             results.style.display = 'block';
             
-            const totalRows = predictResult.count || 0;
+            const totalRows = uploadResult.count || 0;
             const predictions = predictResult.proba || [];
             const classes = predictResult.classes || ['fp', 'candidate', 'confirmed'];
             
             // Calculate statistics
             let confirmed = 0, candidates = 0, falsePositives = 0;
             
-            predictions.forEach(proba => {
-                const maxIndex = proba.indexOf(Math.max(...proba));
-                if (maxIndex === 2) confirmed++;
-                else if (maxIndex === 1) candidates++;
-                else falsePositives++;
-            });
+            if (predictions.length > 0) {
+                predictions.forEach(proba => {
+                    if (proba && proba.length >= 3) {
+                        const maxIndex = proba.indexOf(Math.max(...proba));
+                        // Mapping based on classes array order: ['fp', 'candidate', 'confirmed']
+                        if (classes[maxIndex] === 'confirmed') confirmed++;
+                        else if (classes[maxIndex] === 'candidate') candidates++;
+                        else if (classes[maxIndex] === 'fp') falsePositives++;
+                    }
+                });
+            }
             
             const detectionRate = totalRows > 0 ? ((confirmed + candidates) / totalRows * 100).toFixed(1) : 0;
             
+            // Debug information
+            console.log('Upload result:', uploadResult);
+            console.log('Predict result:', predictResult);
+            console.log('Classes mapping:', classes);
+            console.log('Processed rows for prediction:', totalRows);
+            console.log('Actual predictions received:', predictions.length);
+            console.log('Statistics calculated:', {confirmed, candidates, falsePositives});
+            
+            // Additional validation
+            if (predictions.length === 0) {
+                console.warn('No predictions received from API');
+            }
+            if (predictions.length !== totalRows) {
+                console.warn(`Mismatch: ${totalRows} rows uploaded but ${predictions.length} predictions received`);
+            }
+            
             analysisResults.innerHTML = `
                 <div class="success">
-                    ✅ Аналіз завершено успішно! Оброблено ${totalRows} записів з ${uploadResult.filename}.
+                    ✅ Аналіз завершено успішно! Завантажено ${uploadResult.total_count} записів з ${uploadResult.filename}.
                 </div>
+                
+                ${predictions.length === 0 ? `
+                <div class="error">
+                    ⚠️ Не вдалося отримати прогнози. Можливо, файл містить тільки заголовки або коментарі.
+                    Переконайтеся, що файл містить дійсні дані екзопланет.
+                </div>
+                ` : ''}
                 
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -496,10 +525,18 @@
                     <div class="result-item">
                         <strong>Файл:</strong> ${uploadResult.filename}<br>
                         <strong>Розмір файлу:</strong> ${formatFileSize(selectedFile.size)}<br>
-                        <strong>Оброблено записів:</strong> ${totalRows} ${uploadResult.truncated ? '(перші 1000)' : ''}<br>
+                        <strong>Завантажено записів:</strong> ${uploadResult.total_count} ${uploadResult.truncated ? '(показано перші 1000)' : ''}<br>
+                        <strong>Оброблено для аналізу:</strong> ${predictions.length}<br>
                         <strong>Стовпці:</strong> ${uploadResult.columns?.length || 0}<br>
                         <strong>Час аналізу:</strong> ${new Date().toLocaleString('uk-UA')}
                     </div>
+                    
+                    ${uploadResult.columns && uploadResult.columns.length > 0 ? `
+                    <div class="result-item">
+                        <strong>📋 Виявлені стовпці:</strong><br>
+                        <small>${uploadResult.columns.slice(0, 10).join(', ')}${uploadResult.columns.length > 10 ? '...' : ''}</small>
+                    </div>
+                    ` : ''}
                     
                     ${confirmed > 0 ? `
                     <div class="result-item">
@@ -512,6 +549,16 @@
                     <div class="result-item">
                         <strong>🔍 Знайдено ${candidates} кандидатів в екзопланети!</strong><br>
                         Ці об'єкти потребують додаткового спостереження для підтвердження.
+                    </div>
+                    ` : ''}
+                    
+                    ${predictions.length === 0 ? `
+                    <div class="result-item">
+                        <strong>💡 Поради для наступних спроб:</strong><br>
+                        • Використовуйте зразкові файли: <code>sample_exoplanets.csv</code> або <code>sample_k2.csv</code><br>
+                        • Переконайтеся, що CSV файл містить дані, а не тільки заголовки<br>
+                        • Вкажіть правильну місію (kepler/k2/tess) при завантаженні<br>
+                        • Файли з NASA Exoplanet Archive підтримуються автоматично
                     </div>
                     ` : ''}
                 </div>

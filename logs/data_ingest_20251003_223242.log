@@ -1,0 +1,2 @@
+2025-10-03 22:32:42,487 [INFO] Starting data ingestion pipeline
+2025-10-03 22:32:42,488 [ERROR] Auto source resolution failed: Auto source not found for kepler. Expect one of: data\sources\kepler.csv, data\sources\kepler.tsv, data\sources\kepler.fits

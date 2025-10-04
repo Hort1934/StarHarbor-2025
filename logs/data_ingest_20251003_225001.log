@@ -1,0 +1,20 @@
+2025-10-03 22:50:01,534 [INFO] Starting data ingestion pipeline
+2025-10-03 22:50:01,535 [INFO] Loading raw source for kepler: data\sources\kepler.csv
+2025-10-03 22:50:01,581 [WARNING] Missing identifiers for kepler: ['kepid', 'koi_name']
+2025-10-03 22:50:01,661 [WARNING] Schema YAML not found for kepler: data\schema\kepler_schema.yaml. Proceeding without renames.
+2025-10-03 22:50:01,770 [INFO] Completed pipeline for kepler: rows=9611
+2025-10-03 22:50:01,770 [INFO] Loading raw source for k2: data\sources\k2.csv
+2025-10-03 22:50:01,816 [WARNING] Missing identifiers for k2: ['epic_id']
+2025-10-03 22:50:01,886 [WARNING] Schema YAML not found for k2: data\schema\k2_schema.yaml. Proceeding without renames.
+2025-10-03 22:50:01,897 [INFO] Completed pipeline for k2: rows=74
+2025-10-03 22:50:01,897 [INFO] Loading raw source for tess: data\sources\tess.csv
+2025-10-03 22:50:01,966 [WARNING] Missing identifiers for tess: ['tic_id', 'toi']
+2025-10-03 22:50:02,026 [WARNING] Schema YAML not found for tess: data\schema\tess_schema.yaml. Proceeding without renames.
+2025-10-03 22:50:02,115 [INFO] Completed pipeline for tess: rows=7754
+2025-10-03 22:50:02,180 [INFO] Saved combined file: data/processed/exoplanets_common_20251003.parquet
+2025-10-03 22:50:02,213 [INFO] Saved kepler file: data/processed/kepler_processed_20251003.parquet
+2025-10-03 22:50:02,225 [INFO] Saved k2 file: data/processed/k2_processed_20251003.parquet
+2025-10-03 22:50:02,262 [INFO] Saved tess file: data/processed/tess_processed_20251003.parquet
+2025-10-03 22:50:02,309 [INFO] Saved metadata: data/processed/metadata_20251003.json
+2025-10-03 22:50:02,374 [INFO] QC report saved: data/processed/qc\qc_report_20251003.md
+2025-10-03 22:50:02,375 [INFO] Data ingestion pipeline finished.

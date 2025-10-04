@@ -41,32 +41,35 @@ def _apply_unit_conversions(df: pd.DataFrame, rules: Dict[str, Tuple[str, float]
     return out
 
 COLUMN_MAP: dict[str, str] = {
-    "TESS Object of Interest": "toi_name",
-    "TESS Input Catalog ID": "tic_id_raw",
-    "TFOPWG Disposition (CP | FP | KB | PC)": "tfopwg_disposition",
+    # From actual TESS CSV file column names
+    "toi": "toi_name",
+    "tid": "tic_id_raw", 
+    "tfopwg_disp": "tfopwg_disposition",
 
-    "RA [sexagesimal]": "ra_sexagesimal",
-    "Dec [sexagesimal]": "dec_sexagesimal",
-    "PMRA [mas/yr]": "pm_ra_masyr",
-    "PMDec [mas/yr]": "pm_dec_masyr",
+    "rastr": "ra_sexagesimal",
+    "ra": "ra_deg",
+    "decstr": "dec_sexagesimal", 
+    "dec": "dec_deg",
+    "st_pmra": "pm_ra_masyr",
+    "st_pmdec": "pm_dec_masyr",
 
-    "Planet Transit Midpoint [BJD]": "epoch_bjd",
-    "Planet Orbital Period [days]": "period_days",
-    "Planet Transit Duration [hours]": "duration_hours",
-    "Planet Transit Depth [ppm]": "depth_ppm",
-    "Planet Radius [R_Earth]": "rp_rearth",
+    "pl_tranmid": "epoch_bjd",
+    "pl_orbper": "period_days",
+    "pl_trandurh": "duration_hours", 
+    "pl_trandep": "depth_ppm",
+    "pl_rade": "rp_rearth",
 
-    "Planet Insolation [Earth flux]": "insolation_earth",
-    "Planet Equilibrium Temperature [K]": "eq_temp_k",
+    "pl_insol": "insolation_earth",
+    "pl_eqt": "eq_temp_k",
 
-    "TESS Magnitude": "mag_tess",
-    "Stellar Distance [pc]": "stellar_distance_pc",
-    "Stellar Effective Temperature [K]": "stellar_teff_k",
-    "Stellar log(g) [cm/s^2]": "stellar_logg_cgs",
-    "Stellar Radius [R_Sun]": "stellar_radius_rsun",
+    "st_tmag": "mag_tess",
+    "st_dist": "stellar_distance_pc",
+    "st_teff": "stellar_teff_k",
+    "st_logg": "stellar_logg_cgs",
+    "st_rad": "stellar_radius_rsun",
 
-    "TOI Created Date": "created_at",
-    "Date Modified": "updated_at",
+    "toi_created": "created_at",
+    "rowupdate": "updated_at",
 }
 
 COLUMN_MAP.update({
@@ -79,7 +82,7 @@ COLUMN_MAP.update({
     "TOI": "toi_name",
 })
 
-REQUIRED_COLS = ["TESS Input Catalog ID", "TESS Object of Interest"]
+REQUIRED_COLS = ["tid", "toi"]
 
 UNIT_CONVERSIONS: dict[str, Tuple[str, float]] = {
     #якщо попадеться тривалість у днях
