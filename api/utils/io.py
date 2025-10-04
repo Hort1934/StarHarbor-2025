@@ -11,7 +11,9 @@ def read_table(path_or_bytes: Union[str, Path, bytes], *, suffix: Optional[str] 
         sfx = p.suffix.lower()
         if sfx in {".csv", ".tsv"}:
             sep = "," if sfx == ".csv" else "\t"
-            return pd.read_csv(p, sep=sep, engine="python", low_memory=False)
+            return pd.read_csv(p, sep=sep)
+        if sfx in {".parquet", ".pq"}:
+            return pd.read_parquet(p)
         if sfx in {".fits", ".fit"}:
             from astropy.io import fits
             from astropy.table import Table
@@ -30,7 +32,9 @@ def read_table(path_or_bytes: Union[str, Path, bytes], *, suffix: Optional[str] 
     sfx = (suffix or "").lower()
     if sfx in {".csv", ".tsv"}:
         sep = "," if sfx == ".csv" else "\t"
-        return pd.read_csv(io.BytesIO(path_or_bytes), sep=sep, engine="python", low_memory=False)
+        return pd.read_csv(io.BytesIO(path_or_bytes), sep=sep)
+    if sfx in {".parquet", ".pq"}:
+        return pd.read_parquet(io.BytesIO(path_or_bytes))
     if sfx in {".fits", ".fit"}:
         from astropy.io import fits
         from astropy.table import Table
@@ -43,7 +47,7 @@ def read_table(path_or_bytes: Union[str, Path, bytes], *, suffix: Optional[str] 
             df.columns = [c.decode() if isinstance(c, bytes) else c for c in df.columns]
             return df
 
-    raise ValueError("Provide a valid suffix ('.csv' | '.tsv' | '.fits') for bytes input.")
+    raise ValueError("Provide a valid suffix ('.csv' | '.tsv' | '.parquet' | '.fits') for bytes input.")
 
 
 def normalize_schema(df: pd.DataFrame, mission: Optional[str]) -> pd.DataFrame:

@@ -1,0 +1,4 @@
+period_days,epoch_bjd,duration_hours,depth_ppm,snr,impact,rp_rearth,eq_temp_k,insolation_earth,stellar_teff_k,stellar_logg_cgs,stellar_radius_rsun,stellar_distance_pc,mag_kepler,mag_tess,flag_centroid,flag_eclipse,flag_ephemeris_match,flag_not_transit_like
+0.8374907,2454967.50742,1.4847,284.0,7.1,0.146,1.486,900,110.9,5853,4.438,1.056,429.0,15.347,0,0,0,0,0
+19.28,2458849.245,3.12,89.5,11.2,0.562,1.066,380,3.2,3450,4.82,0.476,42.3,0,12.789,0,0,0,0
+32.939682,2456810.07,4.2,57.0,5.9,0.34,2.24,280,1.87,3457,4.54,0.41,34.0,0,11.99,0,0,0,0

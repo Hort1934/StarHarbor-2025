@@ -110,6 +110,13 @@ def _lazy_boot_curve() -> None:
             log.warning("Failed to load fuse model: %s", e)
 
 
+def _get_class_names() -> list[str]:
+    """Convert target map dict to ordered list of class names"""
+    if not _TARGET_MAP:
+        return []
+    # Sort by value (class index) to get correct order
+    return [k for k, v in sorted(_TARGET_MAP.items(), key=lambda x: x[1])]
+
 def _align_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
     _lazy_boot_tabular()
 
@@ -144,7 +151,7 @@ def predict_tab(df_norm: pd.DataFrame, *, return_labels: bool = True) -> dict:
 
     out = {
         "proba": proba.tolist(),
-        "classes": _TARGET_MAP if (return_labels and _TARGET_MAP) else None,
+        "classes": _get_class_names() if return_labels else None,
         "n": int(len(df_norm)),
     }
 
