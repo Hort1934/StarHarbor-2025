@@ -1,4 +1,57 @@
-# 🌟 StarHarbor - Exoplanet Vetting System
+# 🌟 StarHarbor - AI-Powered Exoplanet Vetting System
+
+[![NASA Space Apps Challenge 2025](https://img.shields.io/badge/NASA_Space_Apps-2025-blue)](https://spaceappschallenge.org)
+[![Python](https://img.shields.io/badge/Python-3.11+-green)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Latest-teal)](https://fastapi.tiangolo.com)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://docker.com)
+
+## 🚀 Project Overview
+
+**StarHarbor** is an advanced AI-powered system for automated exoplanet detection and vetting, designed for the NASA Space Apps Challenge 2025. Our solution processes data from multiple NASA missions (Kepler, K2, TESS) and uses machine learning to classify astronomical objects as false positives, planetary candidates, or confirmed exoplanets.
+
+### 🎯 Challenge Addressed
+**"Exoplanet Discovery Using Machine Learning"** - Creating an AI/ML model trained on NASA's open-source exoplanet datasets to automatically analyze survey data and accurately identify exoplanets.
+
+### ✨ Key Features
+- 🤖 **Advanced AI Classification**: Random Forest model with 85-86% accuracy
+- 🌍 **Multi-Mission Support**: Unified processing for Kepler, K2, and TESS data
+- 🇺🇦 **Ukrainian Interface**: Accessible space science for Ukrainian researchers
+- ⚡ **Real-time Analysis**: Process thousands of candidates in seconds
+- 📊 **Statistical Validation**: Conformal prediction for uncertainty quantification
+- 🔍 **Explainable AI**: SHAP-based feature importance analysis
+- 🐳 **Production Ready**: Full Docker containerization
+
+## 🛠 Technical Architecture
+
+### Machine Learning Pipeline
+```
+Raw NASA Data → Schema Normalization → Feature Engineering → ML Classification → Statistical Validation → Results
+```
+
+### Technology Stack
+- **Backend**: Python 3.11, FastAPI, scikit-learn, pandas
+- **ML Models**: Random Forest, ONNX runtime, feature scaling
+- **Frontend**: HTML5, CSS3, JavaScript (Ukrainian localization)
+- **Deployment**: Docker, Docker Compose
+- **Data Sources**: NASA Exoplanet Archive (KOI, K2, TOI catalogs)
+
+### System Components
+```
+📦 StarHarbor/
+├── 🔧 api/               # FastAPI backend services
+│   ├── models/           # Pydantic data models
+│   ├── routers/          # REST API endpoints
+│   ├── services/         # ML pipeline & business logic
+│   └── utils/            # Core utilities
+├── 📊 data/              # Data processing pipeline
+│   ├── schema/           # Mission-specific normalization
+│   ├── samples/          # Test datasets
+│   └── processed/        # Processed NASA catalogs
+├── 🌐 frontend/          # Ukrainian web interface
+├── 🤖 models/            # Trained ML models & artifacts
+├── 📚 docs/              # Documentation & demo
+└── 🐳 docker-compose.yml # Container orchestration
+```
 
 ## Quick Start Guide
 
