@@ -3,15 +3,11 @@ Repository root: C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harb
 Data directory: C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\data
 Model directory: C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\models
 API docs available at: http://localhost:8000/docs
-INFO:     127.0.0.1:61344 - "GET /docs HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61344 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:62880 - "GET /inference/health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50436 - "POST /inference/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50436 - "OPTIONS /inference/predict HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50436 - "POST /inference/predict HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61839 - "POST /inference/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61839 - "POST /inference/predict HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53631 - "POST /inference/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53631 - "POST /inference/predict HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53907 - "POST /inference/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53907 - "POST /inference/predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55607 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55607 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57573 - "GET /inference/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49870 - "GET /inference/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49870 - "GET /inference/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57487 - "GET /inference/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57487 - "GET /inference/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52140 - "GET /inference/health HTTP/1.1" 200 OK

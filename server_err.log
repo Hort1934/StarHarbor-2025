@@ -1,18 +1,4 @@
-INFO:     Started server process [2744]
+INFO:     Started server process [12680]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\data\schema\kepler.py:50: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
-  df = df.replace('', np.nan)
-C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\.venv\Lib\site-packages\sklearn\utils\validation.py:2749: UserWarning: X does not have valid feature names, but RandomForestClassifier was fitted with feature names
-  warnings.warn(
-C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\data\schema\kepler.py:50: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
-  df = df.replace('', np.nan)
-C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\.venv\Lib\site-packages\sklearn\utils\validation.py:2749: UserWarning: X does not have valid feature names, but RandomForestClassifier was fitted with feature names
-  warnings.warn(
-C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\data\schema\kepler.py:50: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
-  df = df.replace('', np.nan)
-C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\.venv\Lib\site-packages\sklearn\utils\validation.py:2749: UserWarning: X does not have valid feature names, but RandomForestClassifier was fitted with feature names
-  warnings.warn(
-C:\Users\Користувач\OneDrive\Рабочий стол\Star_Harbor\Star_Harbor\.venv\Lib\site-packages\sklearn\utils\validation.py:2749: UserWarning: X does not have valid feature names, but RandomForestClassifier was fitted with feature names
-  warnings.warn(
