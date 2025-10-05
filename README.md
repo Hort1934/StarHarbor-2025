@@ -9,52 +9,26 @@
 
 **StarHarbor** is an advanced AI-powered system for automated exoplanet detection and vetting, designed for the NASA Space Apps Challenge 2025. Our solution processes data from multiple NASA missions (Kepler, K2, TESS) and uses machine learning to classify astronomical objects as false positives, planetary candidates, or confirmed exoplanets.
 
-## 👥 Meet Our Team
-
-<table>
-<tr>
-<td align="center">
-<img src="https://github.com/user-attachments/assets/team-ihor.jpg" width="120px;" alt="Ihor Marchenko"/><br />
-<b>Ihor Marchenko</b><br />
-<i>Team Lead & Backend Developer</i><br />
-🇺🇦 Ukraine<br />
-<a href="https://github.com/hort19345">@hort19345</a>
-</td>
-<td align="center">
-<img src="https://github.com/user-attachments/assets/team-alina.jpg" width="120px;" alt="Alina Koyun"/><br />
-<b>Alina Koyun</b><br />
-<i>Frontend Developer & UI/UX</i><br />
-🇺🇦 Ukraine<br />
-<a href="https://github.com/alinakoyun">@alinakoyun</a>
-</td>
-<td align="center">
-<img src="https://github.com/user-attachments/assets/team-veronika.jpg" width="120px;" alt="Veronika Horobets"/><br />
-<b>Veronika Horobets</b><br />
-<i>Project Manager & Documentation</i><br />
-🇺🇦 Ukraine<br />
-<a href="https://github.com/horobets">@horobets</a>
-</td>
-</tr>
-</table>
-
-Our interdisciplinary team combines expertise in machine learning, software engineering, and astronomical data analysis. We're passionate about making space science accessible through innovative AI tools and multilingual interfaces.
-
 ## 🖼️ Interface Screenshots
 
 ### Main Upload Interface
-![StarHarbor Upload Interface](docs/screenshots/upload-interface.png)
+<img width="1118" height="594" alt="image" src="https://github.com/user-attachments/assets/6d284245-7bdc-4811-b8f5-03faf2c46b34" />
+
 *Clean, intuitive interface for NASA dataset uploads with drag-and-drop functionality*
 
 ### Analysis Results - Multiple Classifications  
-![Analysis Results Kepler](docs/screenshots/kepler-results.png)
+<img width="689" height="747" alt="image" src="https://github.com/user-attachments/assets/fac7c66a-c78e-4557-81be-cd6cf68d44fc" />
+
 *Real-world Kepler data analysis: 4 confirmed, 663 candidates, 333 false positives (66.7% detection rate)*
 
 ### Successful Exoplanet Detection
-![K2 Mission Results](docs/screenshots/k2-results.png)
+<img width="716" height="679" alt="image" src="https://github.com/user-attachments/assets/a5e4f38e-d69c-4fc4-af64-7b4862b0879d" />
+
 *K2 mission analysis: 1,000 confirmed exoplanets identified from 4,004 processed records*
 
 ### False Positive Detection
-![False Positives](docs/screenshots/false-positives.png)
+<img width="688" height="609" alt="image" src="https://github.com/user-attachments/assets/6be81f01-ed92-4112-af19-cc82f905166e" />
+
 *Perfect accuracy in identifying non-planetary objects (4/4 false positives correctly classified)*
 
 ## 🎯 Challenge Addressed
