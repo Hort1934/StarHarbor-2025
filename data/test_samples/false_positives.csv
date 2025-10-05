@@ -1,0 +1,5 @@
+planet_name,koi_name,koi_disposition,koi_period,koi_duration,koi_depth,koi_prad,koi_teq,koi_insol,koi_steff,koi_slogg,koi_srad,koi_model_snr,koi_impact,koi_fpflag_nt,koi_fpflag_ss,koi_fpflag_co,koi_fpflag_ec,ra,dec,koi_kepmag
+Test-EB-1,TEST-007.01,FALSE POSITIVE,15.6,8.5,25000,25.5,2200,5000,7200,4.1,1.8,85.3,0.05,0,1,0,0,78.2,-8.4,9.5
+Test-EB-2,TEST-008.01,FALSE POSITIVE,8.3,12.2,45000,35.2,2800,8000,8500,3.9,2.2,120.5,0.02,0,1,1,0,156.8,52.7,8.2
+Test-EB-3,TEST-009.01,FALSE POSITIVE,25.1,15.3,18000,20.1,1900,3500,6800,4.15,1.6,68.9,0.08,0,1,0,1,245.3,-35.2,10.8
+Test-EB-4,TEST-010.01,FALSE POSITIVE,12.9,9.7,32000,28.8,2500,6200,7600,4.05,2.0,95.2,0.04,0,1,1,0,302.1,18.6,9.1

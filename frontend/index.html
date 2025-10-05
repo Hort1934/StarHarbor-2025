@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarHarbor - Exoplanet Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .card h2 {
+            color: #2a5298;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .upload-section {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-section:hover {
+            border-color: #2a5298;
+            background-color: #f8f9fa;
+        }
+
+        .upload-section.dragover {
+            border-color: #007bff;
+            background-color: #e3f2fd;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(42, 82, 152, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-container {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .results {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .result-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2a5298;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid #dc3545;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid #28a745;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2a5298;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <div class="logo">🌟 StarHarbor</div>
+                <div class="subtitle">2025 NASA Space Apps Challenge - AI Exoplanet Analysis</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>📊 Dataset Upload</h2>
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Drag & drop your file here or click to browse</div>
+                <div class="upload-text">Supported formats: CSV, Parquet</div>
+                <input type="file" id="fileInput" class="file-input" accept=".csv,.parquet,.pq">
+            </div>
+            
+            <div id="fileInfo" class="file-info" style="display: none;">
+                <strong>Selected file:</strong>
+                <div id="fileName"></div>
+                <div id="fileSize"></div>
+                <div id="fileType"></div>
+            </div>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">Loading...</div>
+            </div>
+
+            <button class="btn" id="analyzeBtn" disabled>
+                <span id="btnText">Analyze</span>
+                <span id="btnLoading" class="loading" style="display: none;"></span>
+            </button>
+        </div>
+
+        <div class="card results" id="results">
+            <h2>📈 Analysis Results</h2>
+            <div id="analysisResults"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '/api';
+        
+        const uploadSection = document.getElementById('uploadSection');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const fileType = document.getElementById('fileType');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoading = document.getElementById('btnLoading');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const results = document.getElementById('results');
+        const analysisResults = document.getElementById('analysisResults');
+
+        let selectedFile = null;
+        let uploadedData = null;
+
+        // Drag and drop functionality
+        uploadSection.addEventListener('click', () => fileInput.click());
+        uploadSection.addEventListener('dragover', handleDragOver);
+        uploadSection.addEventListener('drop', handleDrop);
+        uploadSection.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+        analyzeBtn.addEventListener('click', analyzeFile);
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        function handleFile(file) {
+            const validTypes = ['.csv', '.parquet', '.pq'];
+            const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+            
+            if (!validTypes.includes(fileExtension)) {
+                showError('Unsupported file format. Please use CSV or Parquet files.');
+                return;
+            }
+
+            selectedFile = file;
+            fileName.textContent = file.name;
+            fileSize.textContent = `Size: ${formatFileSize(file.size)}`;
+            fileType.textContent = `Type: ${fileExtension.toUpperCase()}`;
+            fileInfo.style.display = 'block';
+            analyzeBtn.disabled = false;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        async function analyzeFile() {
+            if (!selectedFile) return;
+
+            setLoading(true);
+            showProgress();
+            
+            try {
+                // Step 1: Upload and parse file
+                updateProgress(20, 'Uploading file...');
+                
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                
+                const uploadResponse = await fetch(`${API_BASE}/inference/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!uploadResponse.ok) {
+                    const errorData = await uploadResponse.json().catch(() => ({}));
+                    throw new Error(errorData.detail || `Upload error: ${uploadResponse.status}`);
+                }
+                
+                updateProgress(40, 'Processing dataset...');
+                
+                uploadedData = await uploadResponse.json();
+                
+                updateProgress(60, 'AI analysis in progress...');
+                
+                // Step 2: Make prediction request
+                const predictResponse = await fetch(`${API_BASE}/inference/predict`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        rows: uploadedData.rows || [],
+                        mission: 'kepler', // Default mission for compatibility
+                        return_labels: true
+                    })
+                });
+                
+                if (!predictResponse.ok) {
+                    const errorData = await predictResponse.json().catch(() => ({}));
+                    throw new Error(errorData.detail || `Analysis error: ${predictResponse.status}`);
+                }
+                
+                const predictResult = await predictResponse.json();
+                
+                updateProgress(100, 'Complete!');
+                
+                setTimeout(() => {
+                    hideProgress();
+                    displayResults(predictResult, uploadedData);
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Analysis error:', error);
+                hideProgress();
+                showError(`Analysis error: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function setLoading(loading) {
+            analyzeBtn.disabled = loading;
+            if (loading) {
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline-block';
+            } else {
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+            }
+        }
+
+        function showProgress() {
+            progressContainer.style.display = 'block';
+        }
+
+        function hideProgress() {
+            progressContainer.style.display = 'none';
+            updateProgress(0, '');
+        }
+
+        function updateProgress(percent, text) {
+            progressFill.style.width = percent + '%';
+            progressText.textContent = text;
+        }
+
+        function displayResults(predictResult, uploadResult) {
+            results.style.display = 'block';
+            
+            const totalRows = uploadResult.count || 0;
+            const predictions = predictResult.proba || [];
+            const classes = predictResult.classes || ['fp', 'candidate', 'confirmed'];
+            
+            // Calculate statistics
+            let confirmed = 0, candidates = 0, falsePositives = 0;
+            
+            if (predictions.length > 0) {
+                predictions.forEach(proba => {
+                    if (proba && proba.length >= 3) {
+                        const maxIndex = proba.indexOf(Math.max(...proba));
+                        // Mapping based on classes array order: ['fp', 'candidate', 'confirmed']
+                        if (classes[maxIndex] === 'confirmed') confirmed++;
+                        else if (classes[maxIndex] === 'candidate') candidates++;
+                        else if (classes[maxIndex] === 'fp') falsePositives++;
+                    }
+                });
+            }
+            
+            const detectionRate = totalRows > 0 ? ((confirmed + candidates) / totalRows * 100).toFixed(1) : 0;
+            
+            // Debug information
+            console.log('Upload result:', uploadResult);
+            console.log('Predict result:', predictResult);
+            console.log('Classes mapping:', classes);
+            console.log('Processed rows for prediction:', totalRows);
+            console.log('Actual predictions received:', predictions.length);
+            console.log('Statistics calculated:', {confirmed, candidates, falsePositives});
+            
+            // Additional validation
+            if (predictions.length === 0) {
+                console.warn('No predictions received from API');
+            }
+            if (predictions.length !== totalRows) {
+                console.warn(`Mismatch: ${totalRows} rows uploaded but ${predictions.length} predictions received`);
+            }
+            
+            analysisResults.innerHTML = `
+                <div class="success">
+                    ✅ Analysis completed successfully! Processed ${uploadResult.total_count} records from ${uploadResult.filename}.
+                </div>
+                
+                ${predictions.length === 0 ? `
+                <div class="error">
+                    ⚠️ Failed to get predictions. File may contain only headers or comments.
+                    Please ensure the file contains valid exoplanet data.
+                </div>
+                ` : ''}
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">${confirmed}</div>
+                        <div class="stat-label">Confirmed Exoplanets</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${candidates}</div>
+                        <div class="stat-label">Planet Candidates</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${falsePositives}</div>
+                        <div class="stat-label">False Positives</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${detectionRate}%</div>
+                        <div class="stat-label">Detection Rate</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h3>🔬 Analysis Details</h3>
+                    <div class="result-item">
+                        <strong>File:</strong> ${uploadResult.filename}<br>
+                        <strong>File Size:</strong> ${formatFileSize(selectedFile.size)}<br>
+                        <strong>Records Loaded:</strong> ${uploadResult.total_count} ${uploadResult.truncated ? '(showing first 1000)' : ''}<br>
+                        <strong>Processed for Analysis:</strong> ${predictions.length}<br>
+                        <strong>Columns:</strong> ${uploadResult.columns?.length || 0}<br>
+                        <strong>Analysis Time:</strong> ${new Date().toLocaleString('en-US')}
+                    </div>
+                    
+                    ${uploadResult.columns && uploadResult.columns.length > 0 ? `
+                    <div class="result-item">
+                        <strong>📋 Detected Columns:</strong><br>
+                        <small>${uploadResult.columns.slice(0, 10).join(', ')}${uploadResult.columns.length > 10 ? '...' : ''}</small>
+                    </div>
+                    ` : ''}
+                    
+                    ${confirmed > 0 ? `
+                    <div class="result-item">
+                        <strong>🌟 Found ${confirmed} confirmed exoplanets!</strong><br>
+                        These objects have a high probability of being genuine exoplanets.
+                    </div>
+                    ` : ''}
+                    
+                    ${candidates > 0 ? `
+                    <div class="result-item">
+                        <strong>🔍 Found ${candidates} exoplanet candidates!</strong><br>
+                        These objects require additional observation for confirmation.
+                    </div>
+                    ` : ''}
+                    
+                    ${predictions.length === 0 ? `
+                    <div class="result-item">
+                        <strong>💡 Tips for next attempts:</strong><br>
+                        • Use sample files: <code>sample_exoplanets.csv</code> or <code>sample_k2.csv</code><br>
+                        • Ensure CSV file contains data, not just headers<br>
+                        • Specify correct mission (kepler/k2/tess) when uploading<br>
+                        • NASA Exoplanet Archive files are supported automatically
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            if (results.style.display === 'block') {
+                analysisResults.innerHTML = `<div class="error">❌ ${message}</div>`;
+            } else {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error';
+                errorDiv.innerHTML = `❌ ${message}`;
+                document.querySelector('.container').appendChild(errorDiv);
+                setTimeout(() => errorDiv.remove(), 8000);
+            }
+        }
+
+        // Check API availability on page load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(`${API_BASE}/inference/health`);
+                if (response.ok) {
+                    console.log('✅ API server available');
+                } else {
+                    showError('⚠️ API server not responding. Make sure the server is running.');
+                }
+            } catch (error) {
+                console.error('API connection error:', error);
+                showError('⚠️ Cannot connect to API server. Make sure the server is running on localhost:8000');
+            }
+        });
+    </script>
+</body>
+</html>

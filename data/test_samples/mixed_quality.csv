@@ -1,0 +1,6 @@
+planet_name,koi_name,koi_disposition,koi_period,koi_duration,koi_depth,koi_prad,koi_teq,koi_insol,koi_steff,koi_slogg,koi_srad,koi_model_snr,koi_impact,koi_fpflag_nt,koi_fpflag_ss,koi_fpflag_co,koi_fpflag_ec,ra,dec,koi_kepmag
+Mixed-Earth,MIX-001.01,CANDIDATE,372.0,6.3,85,1.05,290,0.95,5780,4.43,1.02,16.8,0.28,0,0,0,0,145.6,22.1,12.8
+Mixed-HotJup,MIX-002.01,CANDIDATE,3.5,3.4,11500,10.8,1600,2200.0,6300,4.28,1.25,42.1,0.12,0,0,0,0,234.2,-18.5,10.5
+Mixed-FP,MIX-003.01,FALSE POSITIVE,18.2,10.5,28000,24.2,2300,4800.0,7800,4.08,1.9,95.5,0.03,0,1,1,0,88.7,45.3,9.2
+Mixed-Marg1,MIX-004.01,CANDIDATE,89.5,5.1,180,2.2,410,18.5,5400,4.48,0.92,10.2,0.65,1,0,0,0,312.4,-8.9,15.2
+Mixed-Marg2,MIX-005.01,CANDIDATE,156.3,6.8,95,1.5,320,7.8,4900,4.55,0.78,9.1,0.75,0,0,1,1,67.8,35.7,15.9

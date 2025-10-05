@@ -1,76 +1,72 @@
 from __future__ import annotations
 from typing import Optional, Union
-import io as _io
 import importlib
 from pathlib import Path
 import pandas as pd
 import csv
+import io as _io
 
 def _read_csv_robust(path_or_buf, *, sep_hint: Optional[str] = None):
+    """
+    Read CSV with robust handling of NASA Exoplanet Archive files that contain comment headers.
+    """
+    # Common kwargs for all reading attempts
+    common_kwargs = {
+        "engine": "python",
+        "encoding": "utf-8-sig",
+        "quotechar": '"',
+        "doublequote": True,
+        "escapechar": "\\",
+        "on_bad_lines": "skip",
+        "skip_blank_lines": True,
+        "comment": "#",  # Skip comment lines starting with #
+    }
+    
     if sep_hint in (",", "\t", ";", "|"):
         try:
-            return pd.read_csv(
-                path_or_buf,
-                sep=sep_hint,
-                engine="python",
-                encoding="utf-8-sig",
-                quotechar='"',
-                doublequote=True,
-                escapechar="\\",
-                on_bad_lines="skip",
-                skip_blank_lines=True,
-            )
+            return pd.read_csv(path_or_buf, sep=sep_hint, **common_kwargs)
         except Exception:
             pass
 
+    # Try automatic separator detection
     try:
-        return pd.read_csv(
-            path_or_buf,
-            sep=None,                   
-            engine="python",
-            encoding="utf-8-sig",
-            quotechar='"',
-            doublequote=True,
-            escapechar="\\",
-            on_bad_lines="skip",
-            skip_blank_lines=True,
-        )
+        return pd.read_csv(path_or_buf, sep=None, **common_kwargs)
     except Exception:
         pass
 
+    # Try common separators
     for s in (",", ";", "\t", "|"):
         try:
-            return pd.read_csv(
-                path_or_buf,
-                sep=s,
-                engine="python",
-                encoding="utf-8-sig",
-                quotechar='"',
-                doublequote=True,
-                escapechar="\\",
-                on_bad_lines="skip",
-                skip_blank_lines=True,
-            )
+            return pd.read_csv(path_or_buf, sep=s, **common_kwargs)
         except Exception:
             continue
 
+    # Fallback with dialect detection
     if isinstance(path_or_buf, (str, Path)):
-        with open(path_or_buf, "r", encoding="utf-8-sig", errors="replace") as f:
-            sample = f.read(4096)
-        dialect = csv.Sniffer().sniff(sample, delimiters=[",", ";", "\t", "|"])
-        return pd.read_csv(
-            path_or_buf,
-            sep=dialect.delimiter,
-            engine="python",
-            encoding="utf-8-sig",
-            quotechar=dialect.quotechar or '"',
-            doublequote=True,
-            escapechar="\\",
-            on_bad_lines="skip",
-            skip_blank_lines=True,
-        )
+        try:
+            with open(path_or_buf, "r", encoding="utf-8-sig", errors="replace") as f:
+                # Skip comment lines when detecting dialect
+                lines = []
+                for line in f:
+                    if not line.strip().startswith("#") and line.strip():
+                        lines.append(line)
+                        if len(lines) >= 10:  # Use first 10 non-comment lines for detection
+                            break
+                
+                if lines:
+                    sample = "".join(lines)
+                    dialect = csv.Sniffer().sniff(sample, delimiters=[",", ";", "\t", "|"])
+                    return pd.read_csv(
+                        path_or_buf,
+                        sep=dialect.delimiter,
+                        quotechar=dialect.quotechar or '"',
+                        **common_kwargs
+                    )
+        except Exception:
+            pass
 
-    return pd.read_csv(path_or_buf)
+    # Final fallback
+    return pd.read_csv(path_or_buf, comment="#")
 
 def read_table(path_or_bytes: Union[str, Path, bytes], *, suffix: Optional[str] = None) -> pd.DataFrame:
     if isinstance(path_or_bytes, (str, Path)):
@@ -122,7 +118,6 @@ def normalize_schema(df: pd.DataFrame, mission: Optional[str]) -> pd.DataFrame:
     try:
         mod = importlib.import_module(f"data.schema.{mission_norm}")
     except ModuleNotFoundError:
-        # no schema module 
         return df
 
     if hasattr(mod, "normalize"):

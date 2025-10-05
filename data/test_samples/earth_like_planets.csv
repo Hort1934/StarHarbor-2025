@@ -1,0 +1,4 @@
+planet_name,koi_name,koi_disposition,koi_period,koi_duration,koi_depth,koi_prad,koi_teq,koi_insol,koi_steff,koi_slogg,koi_srad,koi_model_snr,koi_impact,koi_fpflag_nt,koi_fpflag_ss,koi_fpflag_co,koi_fpflag_ec,ra,dec,koi_kepmag
+Test-Earth-1,TEST-001.01,CANDIDATE,365.25,6.5,84,1.0,288,1.0,5778,4.44,1.0,15.2,0.3,0,0,0,0,290.5,42.3,12.5
+Test-Earth-2,TEST-002.01,CANDIDATE,350.0,6.2,87,1.1,295,0.9,5800,4.42,1.05,18.5,0.25,0,0,0,0,315.2,-15.7,13.1
+Test-Earth-3,TEST-003.01,CANDIDATE,380.5,6.8,81,0.95,280,1.1,5750,4.46,0.98,14.8,0.35,0,0,0,0,45.8,28.9,11.8

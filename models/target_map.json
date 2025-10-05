@@ -1,1 +1,5 @@
-{"confirmed": 2, "candidate": 1, "fp": 0}
+{
+  "fp": 0,
+  "candidate": 1,
+  "confirmed": 2
+}

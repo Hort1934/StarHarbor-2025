@@ -151,6 +151,43 @@ def vet(req: PredictRequest):
         raise HTTPException(500, f"Vetting failed: {e}")
 
 @router.post(
+    "/upload",
+    summary="Upload and parse dataset file (CSV/Parquet) for frontend",
+)
+def upload_dataset(
+    file: UploadFile = File(...),
+    mission: str = Query(None, description="kepler | k2 | tess — if raw columns file, specify mission"),
+):
+    if not file or not file.filename:
+        raise HTTPException(400, "No file uploaded.")
+
+    try:
+        df = read_table(file.file.read(), suffix=Path(file.filename).suffix.lower())
+        df = normalize_schema(df, mission)
+        
+        # Replace NaN values with None for JSON serialization
+        df = df.fillna("")
+        
+        # Limit to first 1000 rows for frontend display
+        max_rows = 1000
+        original_count = len(df)
+        if len(df) > max_rows:
+            df = df.head(max_rows)
+            
+        rows = df.to_dict(orient="records")
+        return {
+            "filename": file.filename,
+            "rows": rows,
+            "count": len(rows),
+            "total_count": original_count,
+            "truncated": original_count > max_rows,
+            "columns": list(df.columns)
+        }
+    except Exception as e:
+        log.exception("Upload failed: %s", e)
+        raise HTTPException(500, f"Upload failed: {e}")
+
+@router.post(
     "/predict-curve",
     summary="Predict from a lightcurve file (CSV/TSV/FITS) using ONNX model (if available)",
 )

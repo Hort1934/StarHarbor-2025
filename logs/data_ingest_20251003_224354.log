@@ -1,0 +1,39 @@
+2025-10-03 22:43:54,445 [INFO] Starting data ingestion pipeline
+2025-10-03 22:43:54,446 [INFO] Loading raw source for kepler: data\sources\kepler.csv
+2025-10-03 22:43:54,500 [WARNING] Missing identifiers for kepler: ['kepid', 'koi_name']
+2025-10-03 22:43:54,802 [WARNING] Schema YAML not found for kepler: data\schema\kepler_schema.yaml. Proceeding without renames.
+2025-10-03 22:43:54,930 [INFO] Completed pipeline for kepler: rows=9611
+2025-10-03 22:43:54,931 [INFO] Loading raw source for k2: data\sources\k2.csv
+2025-10-03 22:43:54,970 [WARNING] Missing identifiers for k2: ['epic_id']
+2025-10-03 22:43:55,038 [WARNING] Schema YAML not found for k2: data\schema\k2_schema.yaml. Proceeding without renames.
+2025-10-03 22:43:55,038 [ERROR] Error processing k2: Can only use .str accessor with string values!
+Traceback (most recent call last):
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 457, in main
+    df_norm = normalize_schema(df_raw, mission)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 221, in normalize_schema
+    epic_id = planet_series.str.extract(r"(EPIC\s*\d+)")[0]
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\core\generic.py", line 6204, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\core\accessor.py", line 224, in __get__
+    accessor_obj = self._accessor(obj)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\core\strings\accessor.py", line 190, in __init__
+    self._inferred_dtype = self._validate(data)
+                           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\core\strings\accessor.py", line 244, in _validate
+    raise AttributeError("Can only use .str accessor with string values!")
+AttributeError: Can only use .str accessor with string values!. Did you mean: 'std'?
+2025-10-03 22:43:55,101 [INFO] Loading raw source for tess: data\sources\tess.csv
+2025-10-03 22:43:55,175 [WARNING] Missing identifiers for tess: ['tic_id', 'toi']
+2025-10-03 22:43:55,228 [WARNING] Schema YAML not found for tess: data\schema\tess_schema.yaml. Proceeding without renames.
+2025-10-03 22:43:55,312 [INFO] Completed pipeline for tess: rows=7754
+2025-10-03 22:43:55,375 [INFO] Saved combined file: data/processed/exoplanets_common_20251003.parquet
+2025-10-03 22:43:55,413 [INFO] Saved kepler file: data/processed/kepler_processed_20251003.parquet
+2025-10-03 22:43:55,421 [INFO] Saved k2 file: data/processed/k2_processed_20251003.parquet
+2025-10-03 22:43:55,457 [INFO] Saved tess file: data/processed/tess_processed_20251003.parquet
+2025-10-03 22:43:55,499 [INFO] Saved metadata: data/processed/metadata_20251003.json
+2025-10-03 22:43:55,571 [INFO] QC report saved: data/processed/qc\qc_report_20251003.md
+2025-10-03 22:43:55,571 [INFO] Data ingestion pipeline finished.

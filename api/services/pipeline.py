@@ -22,10 +22,10 @@ from api.utils.constants import (
 
 log = logging.getLogger(__name__)
 
-_PREPROCESSOR = None
-_FEATURES: list[str] = []
-_TAB_MODEL = None
-_TARGET_MAP = None                  
+_PREPROCESSOR = None                      
+_FEATURES: List[str] = []            
+_TARGET_MAP: Optional[List[str]] = None
+_TAB_MODEL = None                    
 _CNN_SESSION = None                  
 _SCALER = None                      
 _FUSE = None                         
@@ -36,9 +36,10 @@ def _load_json(path: Path) -> dict:
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return {}
-        
+
+
 def _lazy_boot_tabular():
-    global _TAB_MODEL, _FEATURES, _PREPROCESSOR
+    global _TAB_MODEL, _FEATURES, _PREPROCESSOR, _TARGET_MAP
     if _TAB_MODEL is not None and _FEATURES:
         return
 
@@ -46,6 +47,7 @@ def _lazy_boot_tabular():
         TAB_MODEL_PATH,
         PREPROCESSOR_PATH,
         FEATURE_LIST_PATH,
+        TARGET_MAP_PATH,
     )
     import json, joblib
 
@@ -56,8 +58,21 @@ def _lazy_boot_tabular():
         with open(FEATURE_LIST_PATH, "r", encoding="utf-8") as f:
             _FEATURES = json.load(f)
 
+    if _TARGET_MAP is None and TARGET_MAP_PATH.exists():
+        try:
+            with open(TARGET_MAP_PATH, "r", encoding="utf-8") as f:
+                target_dict = json.load(f)
+                # Convert to list format: index -> class name
+                _TARGET_MAP = [""] * len(target_dict)
+                for class_name, idx in target_dict.items():
+                    _TARGET_MAP[idx] = class_name
+        except Exception as e:
+            log.warning("Failed to load target map: %s", e)
+            _TARGET_MAP = ["fp", "candidate", "confirmed"]  # fallback
+
     if _TAB_MODEL is None:
         _TAB_MODEL = joblib.load(TAB_MODEL_PATH)
+
 
 def _lazy_boot_curve() -> None:
     global _CNN_SESSION, _SCALER, _FUSE, _PARAMS
@@ -104,10 +119,71 @@ def _align_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
     _lazy_boot_tabular()
 
     X = df.copy()
+    
+    # Add missing feature columns filled with NaN
     for col in _FEATURES:
         if col not in X.columns:
             X[col] = np.nan
-    return X[_FEATURES]
+    
+    # Compute derived features if possible
+    try:
+        # Log features
+        if "period_days" in X.columns and "log_period" in _FEATURES:
+            X["log_period"] = np.log10(X["period_days"].clip(lower=0.1))
+            
+        if "duration_hours" in X.columns and "log_duration" in _FEATURES:
+            X["log_duration"] = np.log10(X["duration_hours"].clip(lower=0.1))
+            
+        if "stellar_teff_k" in X.columns and "log_teff" in _FEATURES:
+            X["log_teff"] = np.log10(X["stellar_teff_k"].clip(lower=1000))
+        
+        # Period-based ratios
+        if "duration_hours" in X.columns and "period_days" in X.columns and "dur_over_p13" in _FEATURES:
+            period_hours = X["period_days"] * 24
+            X["dur_over_p13"] = X["duration_hours"] / (period_hours ** (1/3))
+            
+        # Duration ratio (duration / period)
+        if "duration_hours" in X.columns and "period_days" in X.columns and "duration_ratio" in _FEATURES:
+            X["duration_ratio"] = X["duration_hours"] / (X["period_days"] * 24)
+        
+        # Planet radius estimates
+        if "depth_ppm" in X.columns and "stellar_radius_rsun" in X.columns:
+            # k = sqrt(depth_ppm / 1e6)
+            if "k_est" in _FEATURES:
+                X["k_est"] = np.sqrt(X["depth_ppm"] / 1e6)
+            
+            # rp = k * R_star (in Earth radii)
+            if "rp_est_rearth" in _FEATURES:
+                k_val = np.sqrt(X["depth_ppm"] / 1e6)
+                r_star_rearth = X["stellar_radius_rsun"] * 109.16  # 1 R_sun ≈ 109.16 R_earth
+                X["rp_est_rearth"] = k_val * r_star_rearth
+        
+        # Depth over stellar radius
+        if "depth_ppm" in X.columns and "stellar_radius_rsun" in X.columns and "depth_over_rstar" in _FEATURES:
+            X["depth_over_rstar"] = X["depth_ppm"] / (X["stellar_radius_rsun"] * 1e6)
+        
+        # Compare k vs measured radius
+        if "k_est" in X.columns and "rp_rearth" in X.columns and "k_vs_rp" in _FEATURES:
+            X["k_vs_rp"] = X["k_est"] / X["rp_rearth"].clip(lower=0.1)
+        
+        # Relative insolation
+        if "insolation_earth" in X.columns and "insolation_rel_earth" in _FEATURES:
+            X["insolation_rel_earth"] = np.log10(X["insolation_earth"].clip(lower=0.01))
+            
+        # Round period for binning
+        if "period_days" in X.columns and "period_rounded" in _FEATURES:
+            X["period_rounded"] = np.round(X["period_days"], 1)
+            
+    except Exception as e:
+        print(f"Warning: Error computing derived features: {e}")
+    
+    # Ensure all feature columns are numeric, convert strings to NaN
+    feature_df = X[_FEATURES].copy()
+    for col in feature_df.columns:
+        if feature_df[col].dtype == 'object':
+            feature_df[col] = pd.to_numeric(feature_df[col], errors='coerce')
+    
+    return feature_df
 
 def predict_tab(df_norm: pd.DataFrame, *, return_labels: bool = True) -> dict:
     _lazy_boot_tabular()
@@ -237,10 +313,7 @@ def predict_fused(
 
 def get_model_and_features():
     _lazy_boot_tabular()
-    return _TAB_MODEL, _FEATURES
+    return _TAB_MODEL, list(_FEATURES)
 
 def align_features(df: pd.DataFrame) -> pd.DataFrame:
     return _align_feature_frame(df)
-
-
-

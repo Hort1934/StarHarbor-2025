@@ -1,0 +1,65 @@
+2025-10-03 22:33:40,967 [INFO] Starting data ingestion pipeline
+2025-10-03 22:33:40,968 [INFO] Loading raw source for kepler: data\sources\kepler.csv
+2025-10-03 22:33:40,968 [ERROR] Error processing kepler: The 'low_memory' option is not supported with the 'python' engine
+Traceback (most recent call last):
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 439, in main
+    df_raw, saved_info = load_raw(source, mission, args.outdir_raw, date_tag)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 112, in load_raw
+    df = pd.read_csv(source, sep=None, engine="python", low_memory=False)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 948, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 611, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1435, in __init__
+    options = self._get_options_with_defaults(engine)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1488, in _get_options_with_defaults
+    raise ValueError(
+ValueError: The 'low_memory' option is not supported with the 'python' engine
+2025-10-03 22:33:40,989 [INFO] Loading raw source for k2: data\sources\k2.csv
+2025-10-03 22:33:40,989 [ERROR] Error processing k2: The 'low_memory' option is not supported with the 'python' engine
+Traceback (most recent call last):
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 439, in main
+    df_raw, saved_info = load_raw(source, mission, args.outdir_raw, date_tag)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 112, in load_raw
+    df = pd.read_csv(source, sep=None, engine="python", low_memory=False)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 948, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 611, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1435, in __init__
+    options = self._get_options_with_defaults(engine)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1488, in _get_options_with_defaults
+    raise ValueError(
+ValueError: The 'low_memory' option is not supported with the 'python' engine
+2025-10-03 22:33:40,990 [INFO] Loading raw source for tess: data\sources\tess.csv
+2025-10-03 22:33:40,990 [ERROR] Error processing tess: The 'low_memory' option is not supported with the 'python' engine
+Traceback (most recent call last):
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 439, in main
+    df_raw, saved_info = load_raw(source, mission, args.outdir_raw, date_tag)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Star_Harbor\data\data_ingest.py", line 112, in load_raw
+    df = pd.read_csv(source, sep=None, engine="python", low_memory=False)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 948, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 611, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1435, in __init__
+    options = self._get_options_with_defaults(engine)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\site-packages\pandas\io\parsers\readers.py", line 1488, in _get_options_with_defaults
+    raise ValueError(
+ValueError: The 'low_memory' option is not supported with the 'python' engine
+2025-10-03 22:33:40,991 [ERROR] No dataframes were successfully processed. Exiting.
